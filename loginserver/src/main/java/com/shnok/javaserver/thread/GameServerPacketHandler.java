@@ -135,7 +135,7 @@ public class GameServerPacketHandler extends Thread {
                         gameserver.forceClose(LoginServerFailReason.REASON_ALREADY_LOGGED_IN.getCode());
                         return false;
                     }
-                    gameserver.attachGameServerInfo(gsi, packet.getPort(), packet.getHosts(), packet.getMaxPlayer());
+                    gameserver.attachGameServerInfo(gsi, packet.getPort(), packet.getHost(), packet.getMaxPlayer());
                 }
             } else {
                 log.debug("There is already a server registered with the desired id and different hex id.");
@@ -147,7 +147,7 @@ public class GameServerPacketHandler extends Thread {
                     log.debug("Trying to register this one with an alternative id.");
                     gsi = new GameServerInfo(packet.getId(), packet.getHexId(), gameserver);
                     if (gameServerController.registerWithFirstAvailableId(gsi)) {
-                        gameserver.attachGameServerInfo(gsi, packet.getPort(), packet.getHosts(), packet.getMaxPlayer());
+                        gameserver.attachGameServerInfo(gsi, packet.getPort(), packet.getHost(), packet.getMaxPlayer());
                         GameServerController.getInstance().registerServerOnDB(gsi);
                     } else {
                         log.debug("No free gameserver id remaining.");
@@ -167,7 +167,7 @@ public class GameServerPacketHandler extends Thread {
             if (server.acceptNewGameserver()) {
                 gsi = new GameServerInfo(packet.getId(), packet.getHexId(), gameserver);
                 if (gameServerController.register(packet.getId(), gsi)) {
-                    gameserver.attachGameServerInfo(gsi, packet.getPort(), packet.getHosts(), packet.getMaxPlayer());
+                    gameserver.attachGameServerInfo(gsi, packet.getPort(), packet.getHost(), packet.getMaxPlayer());
                     GameServerController.getInstance().registerServerOnDB(gsi);
                 } else {
                     log.error("ID {} is not available anymore.", packet.getId());

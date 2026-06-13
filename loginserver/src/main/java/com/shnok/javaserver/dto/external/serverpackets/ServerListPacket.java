@@ -93,7 +93,7 @@ public class ServerListPacket extends SendablePacket {
 
         ServerData(LoginClientThread client, GameServerInfo gsi) {
             try {
-                ip = InetAddress.getByName(gsi.getServerAddress(client.getConnection().getInetAddress())).getAddress();
+                ip = InetAddress.getByName(gsi.getHostname()).getAddress();
             } catch (UnknownHostException ex) {
                 log.warn("There has been an error getting IP from host!", ex);
                 ip = new byte[4];

@@ -21,8 +21,6 @@ public class BlowFishKeyPacket extends ReceivablePacket {
     public BlowFishKeyPacket(byte[] data, GameServerThread gameServer) {
         super(data);
 
-        readB();
-        readB();
         int blowfishLength = readI();
 
         byte[] tempKey = readB(blowfishLength);
@@ -33,7 +31,7 @@ public class BlowFishKeyPacket extends ReceivablePacket {
 
         try {
             byte[] tempDecryptKey;
-            Cipher rsaCipher = Cipher.getInstance(server.rsaPaddingMode());
+            Cipher rsaCipher = Cipher.getInstance(server.gameserverRsaPaddingMode());
             rsaCipher.init(DECRYPT_MODE, gameServer.getPrivateKey());
             tempDecryptKey = rsaCipher.doFinal(tempKey);
 

@@ -130,7 +130,7 @@ public class GameServerController {
      * @param gsi the game server info DTO.
      */
     public void registerServerOnDB(GameServerInfo gsi) {
-        registerServerOnDB(gsi.getHexId(), gsi.getId(), gsi.getExternalHost());
+        registerServerOnDB(gsi.getHexId(), gsi.getId(), gsi.getHostname());
     }
 
     /**

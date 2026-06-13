@@ -13,12 +13,11 @@ class GameServerAddress extends IPSubnet {
 
     /**
      * Instantiates a new game server address.
-     * @param subnet the subnet
      * @param address the address
      * @throws UnknownHostException the unknown host exception
      */
-    public GameServerAddress(String subnet, String address) throws UnknownHostException {
-        super(subnet);
+    public GameServerAddress(String address) throws UnknownHostException {
+        super(address);
         serverAddress = address;
     }
 }

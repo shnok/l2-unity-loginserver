@@ -24,7 +24,7 @@ public class AuthRequestPacket extends ReceivablePacket {
         byte[] decrypted;
 
         try {
-            final Cipher rsaCipher = Cipher.getInstance(server.rsaPaddingMode());
+            final Cipher rsaCipher = Cipher.getInstance(server.clientRsaPaddingMode());
             rsaCipher.init(Cipher.DECRYPT_MODE, privateKey);
 
             decrypted = Arrays.copyOfRange(data, 1,  1 + 128);

@@ -104,12 +104,13 @@ public class LoginClientThread extends Thread {
                     break;
                 }
 
-                byte[] data = new byte[length];
+                int len = length - 2;
+                byte[] data = new byte[len];
 
                 int receivedBytes = 0;
                 int newBytes = 0;
-                while ((newBytes != -1) && (receivedBytes < (length))) {
-                    newBytes = in.read(data, 0, length);
+                while ((newBytes != -1) && (receivedBytes < (len))) {
+                    newBytes = in.read(data, 0, len);
                     receivedBytes = receivedBytes + newBytes;
                 }
 
@@ -166,8 +167,9 @@ public class LoginClientThread extends Thread {
 
         try {
             synchronized (out) {
-                out.write((byte)(packet.getData().length) & 0xff);
-                out.write((byte)((packet.getData().length) >> 8) & 0xff);
+                int len = packet.getData().length + 2;
+                out.write((byte)(len) & 0xff);
+                out.write((byte)((len) >> 8) & 0xff);
 
                 for (byte b : packet.getData()) {
                     out.write(b & 0xFF);

@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'com.shnok.javaserver'
-version '0.0.3'
+version '0.0.4'
 
 repositories {
     mavenCentral()
@@ -25,6 +25,7 @@ dependencies {
     implementation 'org.aeonbits.owner:owner-java8:1.0.12'
     compileOnly 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
+    implementation 'org.mariadb.jdbc:mariadb-java-client:3.1.4'
 }
 
 application {

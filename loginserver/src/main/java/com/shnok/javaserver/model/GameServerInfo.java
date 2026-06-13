@@ -23,7 +23,7 @@ public class GameServerInfo {
     private GameServerThread gameServerThread;
     private int status;
     // network
-    private final ArrayList<GameServerAddress> addresses = new ArrayList<>(5);
+    private String hostname;
     private int port;
     // config
     private final boolean isPvp = true;
@@ -85,19 +85,6 @@ public class GameServerInfo {
     }
 
     /**
-     * Gets the external host.
-     * @return the external host
-     */
-    public String getExternalHost() {
-        try {
-            return getServerAddress(InetAddress.getByName("0.0.0.0"));
-        } catch (Exception e) {
-
-        }
-        return null;
-    }
-
-    /**
      * Sets the down.
      */
     public void setDown() {
@@ -105,49 +92,5 @@ public class GameServerInfo {
         setPort(0);
         setGameServerThread(null);
         setStatus(ServerStatus.STATUS_DOWN.getCode());
-    }
-
-    /**
-     * Adds the server address.
-     * @param subnet the subnet
-     * @param addr the addr
-     * @throws UnknownHostException the unknown host exception
-     */
-    public void addServerAddress(String subnet, String addr) throws UnknownHostException {
-        addresses.add(new GameServerAddress(subnet, addr));
-    }
-
-    /**
-     * Gets the server address.
-     * @param addr the addr
-     * @return the server address
-     */
-    public String getServerAddress(InetAddress addr) {
-        for (GameServerAddress a : addresses) {
-            if (a.equals(addr)) {
-                return a.getServerAddress();
-            }
-        }
-        return null; // should not happen
-    }
-
-    /**
-     * Gets the server addresses.
-     * @return the server addresses
-     */
-    public String[] getServerAddresses() {
-        String[] result = new String[addresses.size()];
-        for (int i = 0; i < result.length; i++) {
-            result[i] = addresses.get(i).toString();
-        }
-
-        return result;
-    }
-
-    /**
-     * Clear server addresses.
-     */
-    public void clearServerAddresses() {
-        addresses.clear();
     }
 }

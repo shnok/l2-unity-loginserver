@@ -21,7 +21,9 @@ import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.security.KeyPair;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
@@ -94,6 +96,8 @@ public class GameServerThread extends Thread {
                     break;
                 }
 
+                length = length - 2;
+
                 byte[] data = new byte[length];
 
                 int receivedBytes = 0;
@@ -135,8 +139,9 @@ public class GameServerThread extends Thread {
 
         try {
             synchronized (out) {
-                out.write((byte)(packet.getData().length) & 0xff);
-                out.write((byte)((packet.getData().length) >> 8) & 0xff);
+                int len = packet.getData().length + 2;
+                out.write((byte)(len) & 0xff);
+                out.write((byte)((len) >> 8) & 0xff);
 
                 for (byte b : packet.getData()) {
                     out.write(b & 0xFF);
@@ -166,32 +171,36 @@ public class GameServerThread extends Thread {
         }
     }
 
-    public void attachGameServerInfo(GameServerInfo gsi, int port, String[] hosts, int maxPlayers) {
+    public void attachGameServerInfo(GameServerInfo gsi, int port, String host, int maxPlayers) {
         log.debug("Attaching gameserver with ID: {}.", gsi.getId());
 
         setGameServerInfo(gsi);
         gsi.setGameServerThread(this);
         gsi.setPort(port);
-        setGameHosts(hosts);
+        setGameHosts(host);
         gsi.setMaxPlayers(maxPlayers);
         gsi.setAuthed(true);
     }
 
-    public void setGameHosts(String[] hosts) {
+    public void setGameHosts(String hosts) {
         log.info("Updated game server {}[{}] IPs.", gameServerInfo.getName(), gameServerInfo.getId());
 
-        gameServerInfo.clearServerAddresses();
-        for (int i = 0; i < hosts.length; i += 2) {
-            try {
-                gameServerInfo.addServerAddress(hosts[i], hosts[i + 1]);
-            } catch (Exception ex) {
-                log.warn("There has been an error resolving host name {}!", hosts[i], ex);
+        if (!hosts.equals("*"))
+        {
+            try
+            {
+                gameServerInfo.setHostname(InetAddress.getByName(hosts).getHostAddress());
+            }
+            catch (UnknownHostException e)
+            {
+                log.error("Couldn't resolve hostname '{}'.", hosts, e);
+                gameServerInfo.setHostname(connectionIp);
             }
         }
+        else
+            gameServerInfo.setHostname(connectionIp);
 
-        for (String s : gameServerInfo.getServerAddresses()) {
-            log.info(s);
-        }
+        log.info("Gameserver hostname updated to [{}].", gameServerInfo.getHostname());
     }
 
     public void forceClose(int reason) {

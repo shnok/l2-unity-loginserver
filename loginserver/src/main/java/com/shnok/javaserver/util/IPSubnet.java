@@ -10,20 +10,9 @@ public class IPSubnet {
     final boolean _isIPv4;
 
     public IPSubnet(String input) throws UnknownHostException, NumberFormatException, ArrayIndexOutOfBoundsException {
-        int idx = input.indexOf("/");
-        if (idx > 0) {
-            _addr = InetAddress.getByName(input.substring(0, idx)).getAddress();
-            _mask = getMask(Integer.parseInt(input.substring(idx + 1)), _addr.length);
-            _isIPv4 = _addr.length == 4;
-
-            if (!applyMask(_addr)) {
-                throw new UnknownHostException(input);
-            }
-        } else {
-            _addr = InetAddress.getByName(input).getAddress();
-            _mask = getMask(_addr.length * 8, _addr.length); // host, no need to check mask
-            _isIPv4 = _addr.length == 4;
-        }
+        _addr = InetAddress.getByName(input).getAddress();
+        _mask = getMask(_addr.length * 8, _addr.length); // host, no need to check mask
+        _isIPv4 = _addr.length == 4;
     }
 
     public IPSubnet(InetAddress addr, int mask) throws UnknownHostException {

@@ -145,7 +145,15 @@ public class ClientPacketHandler extends Thread {
                 client.setLoginClientState(LoginClientState.AUTHED_LOGIN);
                 client.setSessionKey(LoginServerController.getInstance().getNewSessionKey());
 
-                LoginServerController.getInstance().getCharactersOnAccount(client, accountInfo.getLogin());
+                //Not used in ACIS interlude gameserver
+                //LoginServerController.getInstance().getCharactersOnAccount(client, accountInfo.getLogin());
+
+                // Instead bypass character count for server
+                if (server.showLicense()) {
+                    client.sendPacket(new LoginOkPacket(client.getSessionKey()));
+                } else {
+                    client.sendPacket(new ServerListPacket(client));
+                }
                 break;
             case INVALID_PASSWORD:
                 client.close(LoginFailReason.REASON_USER_OR_PASS_WRONG);

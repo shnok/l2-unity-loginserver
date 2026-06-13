@@ -4,23 +4,24 @@ import com.shnok.javaserver.db.entity.*;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import static com.shnok.javaserver.config.Configuration.server;
+
 public class DbFactory {
     private static SessionFactory sessionFactory;
 
     public static SessionFactory buildSessionFactory() {
         Configuration configuration = new Configuration();
 
-        // Hibernate HikariCP configuration
+        // Hibernate and HikariCP Configuration
         configuration.setProperty("hibernate.connection.provider_class", "org.hibernate.hikaricp.internal.HikariCPConnectionProvider");
         configuration.setProperty("hibernate.hbm2ddl.auto", "none");
         configuration.setProperty("hibernate.show_sql", "false");
         configuration.setProperty("hibernate.format_sql", "true");
 
         // HikariCP properties
-        configuration.setProperty("hibernate.hikari.dataSourceClassName", "org.h2.jdbcx.JdbcDataSource");
-        configuration.setProperty("hibernate.hikari.dataSource.url", "jdbc:h2:file:./db/l2-unity-login");
-        configuration.setProperty("hibernate.hikari.dataSource.user", "h2");
-        configuration.setProperty("hibernate.hikari.dataSource.password", "");
+        configuration.setProperty("hibernate.hikari.jdbcUrl", server.jdbcUrl());
+        configuration.setProperty("hibernate.hikari.username", server.jdbcUsername());
+        configuration.setProperty("hibernate.hikari.password", server.jdbcPassword());
 
         // Connection pool properties
         configuration.setProperty("hibernate.hikari.maximumPoolSize", "5");

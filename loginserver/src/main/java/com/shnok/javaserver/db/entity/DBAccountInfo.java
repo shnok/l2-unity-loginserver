@@ -17,12 +17,12 @@ public class DBAccountInfo {
     private String login;
     @Column(name = "password")
     private String passHash;
-    @Column(name = "accessLevel")
+    @Column(name = "access_level")
     private int accessLevel;
-    @Column(name = "lastServer")
+    @Column(name = "last_server")
     private int lastServer;
-    @Column(name = "lastIp")
+    @Column(name = "last_ip")
     private String lastIp;
-    @Column(name = "lastactive")
+    @Column(name = "last_active")
     private Long lastActive;
 }

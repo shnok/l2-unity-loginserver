@@ -4,14 +4,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum ServerPacketType {
-    Ping((byte)0),
-    Init((byte)1),
-    LoginOk((byte)2),
-    LoginFail((byte)3),
+    Ping((byte)99),
+    Init((byte)0),
+    LoginFail((byte)1),
+    AccountKicked((byte)2),
+    LoginOk((byte)3),
     ServerList((byte)4),
-    AccountKicked((byte)5),
     PlayFail((byte)6),
-    PlayOk((byte)7);
+    PlayOk((byte)7),
+    GGAuth((byte)0x0b);
 
     private final byte value;
 

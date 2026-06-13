@@ -7,10 +7,10 @@ public enum LoginServerPacketType {
     InitLS((byte)0),
     Fail((byte)1),
     AuthResponse((byte) 2),
-    ReceivableList((byte) 3),
-    RequestCharacters((byte) 4),
-    PlayerAuthResponse((byte)5),
-    KickPlayer((byte) 6);
+    PlayerAuthResponse((byte) 3),
+    KickPlayer((byte) 4),
+    ReceivableList((byte) 5),
+    RequestCharacters((byte) 6); //Not used in ACIS interlude gameserver
 
     private final byte value;
 

@@ -21,8 +21,10 @@ public abstract class SendablePacket extends Packet {
     protected void writeS(String s) {
         try {
             if (s != null) {
-                byte[] d = s.getBytes(StandardCharsets.UTF_8);
-                write(d);
+                byte[] d = s.getBytes(StandardCharsets.UTF_16LE);
+                write(d, false);
+                writeB((byte)0);
+                writeB((byte)0);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -40,38 +42,80 @@ public abstract class SendablePacket extends Packet {
     }
 
     protected void writeI(int i) {
-        Byte[] array = new Byte[]{(byte) ((i >> 24) & 0xff),
-                (byte) ((i >> 16) & 0xff),
+//        Byte[] array = new Byte[]{(byte) ((i >> 24) & 0xff),
+//                (byte) ((i >> 16) & 0xff),
+//                (byte) ((i >> 8) & 0xff),
+//                (byte) ((i) & 0xff)};
+//
+//        buffer.addAll(Arrays.asList(array));
+        Byte[] array = new Byte[]{
+                (byte) ((i) & 0xff),
                 (byte) ((i >> 8) & 0xff),
-                (byte) ((i) & 0xff)};
-
+                (byte) ((i >> 16) & 0xff),
+                (byte) ((i >> 24) & 0xff)
+        };
         buffer.addAll(Arrays.asList(array));
     }
 
     protected void writeL(long l) {
-        Byte[] array = new Byte[]{(byte) ((l >> 56) & 0xff),
-                (byte) ((l >> 48) & 0xff),
-                (byte) ((l >> 40) & 0xff),
-                (byte) ((l >> 32) & 0xff),
-                (byte) ((l >> 24) & 0xff),
-                (byte) ((l >> 16) & 0xff),
+//        Byte[] array = new Byte[]{(byte) ((l >> 56) & 0xff),
+//                (byte) ((l >> 48) & 0xff),
+//                (byte) ((l >> 40) & 0xff),
+//                (byte) ((l >> 32) & 0xff),
+//                (byte) ((l >> 24) & 0xff),
+//                (byte) ((l >> 16) & 0xff),
+//                (byte) ((l >> 8) & 0xff),
+//                (byte) (l & 0xff)};
+
+        Byte[] array = new Byte[]{(byte) (l & 0xff),
                 (byte) ((l >> 8) & 0xff),
-                (byte) (l & 0xff)};
+                (byte) ((l >> 16) & 0xff),
+                (byte) ((l >> 24) & 0xff),
+                (byte) ((l >> 32) & 0xff),
+                (byte) ((l >> 40) & 0xff),
+                (byte) ((l >> 48) & 0xff),
+                (byte) ((l >> 56) & 0xff)};
 
         buffer.addAll(Arrays.asList(array));
     }
 
     protected void writeF(float f) {
         int intBits = Float.floatToIntBits(f);
+//        Byte[] array = new Byte[]{
+//                (byte) (intBits >> 24),
+//                (byte) (intBits >> 16),
+//                (byte) (intBits >> 8),
+//                (byte) (intBits)
+//        };
         Byte[] array = new Byte[]{
-                (byte) (intBits >> 24), (byte) (intBits >> 16), (byte) (intBits >> 8), (byte) (intBits)};
+                (byte) (intBits),
+                (byte) (intBits >> 8),
+                (byte) (intBits >> 16),
+                (byte) (intBits >> 24)
+        };
+
+        buffer.addAll(Arrays.asList(array));
+    }
+
+    protected void writeH(int value)
+    {
+        Byte[] array = new Byte[]{
+                (byte) (value),
+                (byte) (value >> 8 & 0xFF)
+        };
 
         buffer.addAll(Arrays.asList(array));
     }
 
     protected void write(byte[] data) {
+        write(data, true);
+    }
 
-        buffer.add((byte) data.length);
+    protected void write(byte[] data, boolean dataArray) {
+        if(dataArray) {
+            buffer.add((byte) data.length);
+        }
+
         List<Byte> byteList = IntStream.range(0, data.length)
                 .mapToObj((int j) -> data[j])
                 .collect(Collectors.toList());

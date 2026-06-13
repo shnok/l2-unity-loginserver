@@ -64,7 +64,7 @@ public class LoginServerController {
 
     private void testCipher(RSAPrivateKey key) throws Exception {
         // avoid worst-case execution, KenM
-        Cipher rsaCipher = Cipher.getInstance(server.rsaPaddingMode());
+        Cipher rsaCipher = Cipher.getInstance(server.clientRsaPaddingMode());
         rsaCipher.init(Cipher.DECRYPT_MODE, key);
     }
 

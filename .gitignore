@@ -28,7 +28,8 @@ Thumbs.db
 *.iws
 workspace.xml
 tasks.xml
-java-server/out/
+loginserver/logs/
+loginserver/build/
 *.bak
 *.log
 .gradle

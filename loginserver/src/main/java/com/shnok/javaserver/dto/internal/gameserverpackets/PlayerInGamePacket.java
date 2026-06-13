@@ -13,7 +13,7 @@ public class PlayerInGamePacket extends ReceivablePacket {
         super(data);
         loggedUsers = new ArrayList<>();
 
-        int playerCount = readI();
+        int playerCount = readH();
         for(int i = 0; i < playerCount; i++) {
             loggedUsers.add(readS());
         }

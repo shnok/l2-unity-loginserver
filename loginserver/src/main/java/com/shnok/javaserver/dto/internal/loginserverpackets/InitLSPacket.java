@@ -5,12 +5,13 @@ import com.shnok.javaserver.enums.packettypes.internal.LoginServerPacketType;
 import lombok.extern.log4j.Log4j2;
 
 import java.util.Arrays;
+import static com.shnok.javaserver.config.Configuration.server;
 
 @Log4j2
 public class InitLSPacket extends SendablePacket {
     public InitLSPacket(byte[] publicKey) {
         super(LoginServerPacketType.InitLS.getValue());
-        writeB((byte) 0);
+        writeI(server.revision());
         writeI(publicKey.length);
         writeB(publicKey);
 

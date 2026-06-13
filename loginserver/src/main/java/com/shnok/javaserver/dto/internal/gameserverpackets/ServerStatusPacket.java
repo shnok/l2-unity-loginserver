@@ -10,8 +10,8 @@ public class ServerStatusPacket extends ReceivablePacket {
     private final ArrayList<Attribute> attributes;
 
     // Attributes
-    public static final int SERVER_LIST_STATUS = 0x00;
-    public static final int MAX_PLAYERS = 0x01;
+    public static final int SERVER_LIST_STATUS = 0x01;
+    public static final int MAX_PLAYERS = 0x07;
 
     // Server Status
     public static final int STATUS_LIGHT = 0x00;
@@ -34,9 +34,6 @@ public class ServerStatusPacket extends ReceivablePacket {
         super(data);
 
         attributes = new ArrayList<>();
-
-        readB();
-        readB();
 
         int totalAttributes = readI();
         for(int i = 0; i < totalAttributes; i++) {
